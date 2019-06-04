@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _pay(BuildContext context) {
-    final _rave = AddDebitCard(
+    final _rave = RaveCardPayment(
       isDemo: true,
       encKey: "c53e399709de57d42e2e36ca",
       publicKey: "FLWPUBK-d97d92534644f21f8c50802f0ff44e02-X",
