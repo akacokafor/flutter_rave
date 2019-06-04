@@ -1,11 +1,11 @@
-# :credit_card: Rave by Flutterwave Plugin for Flutter
+# Rave by Flutterwave Plugin for Flutter
 
 [![pub package](https://img.shields.io/pub/v/flutter_rave.svg)](https://pub.dartlang.org/packages/flutter_rave)
 
 A Flutter plugin for making payments via Rave by Flutterwave Payment Gateway. Fully
 supports Android and iOS.
 
-## :rocket: Installation
+## Installation
 To use this plugin, add `flutter_rave` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
 Then initialize the plugin preferably in the `initState` of your widget.
@@ -83,12 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
 No other configuration required&mdash;the plugin works out of the box.
 
-## :arrow_forward: Running Example project
+## Running Example project
 For help getting started with Flutter, view the online [documentation](https://flutter.io/).
 
 An [example project](https://github.com/akacokafor/flutter_rave/tree/master/example) has been provided in this plugin.
 Clone this repo and navigate to the **example** folder. Open it with a supported IDE or execute `flutter run` from that folder in terminal.
 
-## :pencil: Contributing, :disappointed: Issues and :bug: Bug Reports
+## Contributing, Issues and Bug Reports
 The project is open to public contribution. Please feel very free to contribute.
 Experienced an issue or want to report a bug? Please, [report it here](https://github.com/akacokafor/flutter_rave/issues). Remember to be as descriptive as possible.
