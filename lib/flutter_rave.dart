@@ -20,13 +20,7 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 part 'rave_provider.dart';
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
-
-class AddDebitCard {
+class RaveCardPayment {
   final String publicKey;
   final String encKey;
   final String transactionRef;
@@ -38,7 +32,7 @@ class AddDebitCard {
   final BuildContext context;
   final bool isDemo;
 
-  const AddDebitCard({
+  const RaveCardPayment({
     Key key,
     @required this.publicKey,
     @required this.encKey,
