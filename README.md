@@ -9,12 +9,12 @@ supports Android and iOS.
     <table>
         <tr>
             <td style="text-align: center">
-                <img src="./example/s1.png" width="100%" />
+                <img src="./example/s1.png" width="200" />
             </td>
         </tr>
         <tr>
             <td style="text-align: center">
-                <img src="./example/s2.png" width="100%" />
+                <img src="./example/s2.png" width="200" />
             </td>
         </tr>
     </table>
