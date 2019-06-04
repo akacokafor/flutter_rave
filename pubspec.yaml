@@ -1,8 +1,8 @@
 name: flutter_rave
-description: Rave Card
+description: Flutterwave's Rave Card Processing Plugin
 version: 0.0.1
-author:
-homepage:
+author: Okafor Akachukwu <kasoprecede47@gmail.com>
+homepage: https://github.com/akacokafor/flutter_rave
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
