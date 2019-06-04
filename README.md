@@ -5,6 +5,22 @@
 A Flutter plugin for making payments via Rave by Flutterwave Payment Gateway. Fully
 supports Android and iOS.
 
+<div style="text-align: center">
+    <table>
+        <tr>
+            <td style="text-align: center">
+                <img src="./example/s1.png" width="100%" />
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align: center">
+                <img src="./example/s2.png" width="100%" />
+            </td>
+        </tr>
+    </table>
+</div>
+
+
 ## Installation
 To use this plugin, add `flutter_rave` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
