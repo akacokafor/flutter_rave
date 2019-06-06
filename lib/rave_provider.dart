@@ -25,15 +25,10 @@ class RaveInAppLocalhostServer {
     var completer = new Completer();
     runZoned(() {
       HttpServer.bind('127.0.0.1', _port).then((server) {
-        print('Server running on http://127.0.0.1:' + _port.toString());
         this._server = server;
         server.listen((HttpRequest request) async {
           var qParams = request.requestedUri.queryParameters;
-          print("Server got -> ");
-          print(qParams);
-          print(qParams.runtimeType.toString());
           if (this._onResponse != null) {
-            print("Callback called");
             this._onResponse(qParams);
           }
           request.response.close();
@@ -50,7 +45,7 @@ class RaveInAppLocalhostServer {
   Future<void> close() async {
     if (this._server != null) {
       await this._server.close(force: true);
-      print('Server running on http://127.0.0.1:$_port closed');
+
       this._server = null;
     }
   }
@@ -59,6 +54,7 @@ class RaveInAppLocalhostServer {
 class RaveProvider extends StatefulWidget {
   final RaveWidgetBuilder builder;
   final CreditCardInfo cardInfo;
+  final List<Map<String, dynamic>> subaccounts;
   final String publicKey;
   final String encKey;
   final String transactionRef;
@@ -75,6 +71,7 @@ class RaveProvider extends StatefulWidget {
     @required this.cardInfo,
     @required this.publicKey,
     @required this.encKey,
+    this.subaccounts,
     this.transactionRef,
     this.amount,
     this.email,
@@ -181,6 +178,7 @@ class _RaveProviderState extends State<RaveProvider> {
         suggestedAuth: suggestedAuth,
         suggestedAuthValue: suggestedAuthValue,
         billingAddressInfo: billingAddressInfo,
+        subaccounts: widget.subaccounts,
       );
 
       setState(() {
@@ -190,7 +188,6 @@ class _RaveProviderState extends State<RaveProvider> {
       if (response["message"] == "AUTH_SUGGESTION") {
         if (response["data"]["suggested_auth"] == AUTH_PIN) {
           authValue = await _getAuthValue(response["data"]["suggested_auth"]);
-          print("Auth Value $authValue");
 
           setState(() {
             isProcessing = false;
@@ -204,11 +201,7 @@ class _RaveProviderState extends State<RaveProvider> {
 
         if (response["data"]["suggested_auth"] == AVS_VBVSECURECODE ||
             response["data"]["suggested_auth"] == NOAUTH_INTERNATIONAL) {
-          print("Collect Address Details");
-
           final additionalPayload = await _collectAddressDetails();
-
-          print(additionalPayload);
 
           setState(() {
             isProcessing = false;
@@ -279,8 +272,6 @@ class _RaveProviderState extends State<RaveProvider> {
         } else if (response["data"]["authModelUsed"] == "VBVSECURECODE") {
           final uri = Uri.parse(response["data"]["authurl"]);
           var raveVerificationData;
-
-          print(uri.toString());
 
           verificationRoute = MaterialPageRoute<Map<String, dynamic>>(
             builder: (c) {
@@ -353,9 +344,6 @@ class _RaveProviderState extends State<RaveProvider> {
 
       return null;
     } catch (e, trace) {
-      print(e);
-      print(trace);
-
       if (mounted) {
         Scaffold.of(context).showSnackBar(
           SnackBar(
@@ -381,8 +369,6 @@ class _RaveProviderState extends State<RaveProvider> {
       message: message ?? "Please provide your $response",
     );
 
-    print("_value");
-
     return _value;
   }
 
@@ -403,8 +389,6 @@ class _RaveProviderState extends State<RaveProvider> {
       },
     );
 
-    print("V from result $value");
-
     return value;
   }
 
@@ -419,7 +403,6 @@ class _RaveProviderState extends State<RaveProvider> {
 
   onRaveFeedback(Map<String, dynamic> feedback) {
     if (feedback != null && feedback.containsKey("response")) {
-      print(feedback["response"].runtimeType.toString());
       this.responseResult = json.decode(feedback["response"]);
       this.canContinue = true;
       this.webhookSuccess = true;
@@ -455,12 +438,11 @@ class _BillingInfoProviderState extends State<BillingInfoProvider> {
   @override
   void initState() {
     super.initState();
-    print("Fetch Countries Called");
+
     countries = fetchCountries(context);
   }
 
   List<Map<String, dynamic>> parseCountries(String responseBody) {
-    print(responseBody.length);
     final decoded = json.decode(responseBody);
     final parsed = (decoded as List<dynamic>)
         .map((i) => (i as Map<String, dynamic>))
@@ -471,12 +453,10 @@ class _BillingInfoProviderState extends State<BillingInfoProvider> {
   Future<List<Map<String, dynamic>>> fetchCountries(
       BuildContext context) async {
     try {
-      print("Called Retrieved Countries");
       final response = await rootBundle.loadString(Assets.jsonCountries);
-      print("Retrieved Countries");
+
       return parseCountries(response); // compute(, response);
     } catch (e) {
-      print(e);
       return [];
     }
   }
@@ -717,7 +697,6 @@ class _ValueCollectorComponentState extends State<ValueCollectorComponent> {
               onPressed: () {
                 if (value != null && value.isNotEmpty) {
                   if (widget.onValueCollected != null) {
-                    print("V fron valuecomponent $value");
                     widget.onValueCollected(value);
                   }
                 }

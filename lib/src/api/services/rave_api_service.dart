@@ -104,6 +104,7 @@ class RaveApiService {
     String suggestedAuth = "pin",
     String suggestedAuthValue,
     Map<String, String> billingAddressInfo,
+    List<Map<String, dynamic>> subaccounts,
     String redirectUrl = "http://localhost:8184",
   }) async {
     final payload = {
@@ -129,6 +130,9 @@ class RaveApiService {
 
     if (suggestedAuthValue != null) {
       payload[suggestedAuth.toLowerCase()] = suggestedAuthValue;
+    }
+    if (subaccounts != null) {
+      payload["subaccounts"] = subaccounts;
     }
 
     if (billingAddressInfo != null) {

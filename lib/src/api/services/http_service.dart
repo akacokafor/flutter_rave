@@ -1,8 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dio_flutter_transformer/dio_flutter_transformer.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter_rave/src/api/error_codes.dart';
-import 'package:flutter_rave/src/api/exceptions/otp_exception.dart';
 import 'package:flutter_rave/src/config/api.dart';
 
 class HttpService extends Equatable {
@@ -30,28 +28,10 @@ class HttpService extends Equatable {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options) {
-          //print(options.uri.toString());
-          print(options.data.toString());
           return options;
         },
         onResponse: (Response response) {
-          print(response.headers.toString());
-          print(response.data.toString());
           return response;
-        },
-        onError: (DioError e) {
-          print(e.type.toString());
-          print(e.response?.data);
-
-          if (e.type == DioErrorType.RESPONSE && e.response.statusCode == 403) {
-            final data = e.response.data as Map<String, dynamic>;
-
-            if (data.containsKey("code") &&
-                data["code"] == ErrorCodes.requiresOtp) {
-              return NeedsOtpException(e);
-            }
-          }
-          return e; //continue
         },
       ),
     );
