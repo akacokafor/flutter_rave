@@ -231,6 +231,7 @@ class _RaveProviderState extends State<RaveProvider> {
               response["data"]["flwRef"],
               otp,
               widget.publicKey,
+              !widget.isDemo,
             );
 
             setState(() {
@@ -257,6 +258,7 @@ class _RaveProviderState extends State<RaveProvider> {
               response["data"]["flwRef"],
               otp,
               widget.publicKey,
+              !widget.isDemo,
             );
 
             setState(() {
@@ -343,7 +345,7 @@ class _RaveProviderState extends State<RaveProvider> {
       });
 
       return null;
-    } catch (e, trace) {
+    } catch (e) {
       if (mounted) {
         Scaffold.of(context).showSnackBar(
           SnackBar(

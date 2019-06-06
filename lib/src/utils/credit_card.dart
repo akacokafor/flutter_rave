@@ -1,4 +1,4 @@
-final Map _INDUSTRY_IDENTIFIER_MAP = {
+final Map _industryIdentifierMap = {
   "1": Industries.AIRLINES,
   "2": Industries.AIRLINES,
   "3": Industries.TRAVEL_AND_ENTERTAINMENT,
@@ -10,7 +10,7 @@ final Map _INDUSTRY_IDENTIFIER_MAP = {
   "9": Industries.NATIONAL_ASSIGNMENT
 };
 
-final List _ISSUER_IDENTIFIER_LIST = [
+final List _issuerIdentifierList = [
   {"RegExp": new RegExp(r'^4'), "Issuers": Issuers.VISA},
   {"RegExp": new RegExp(r'^5[1-5]'), "Issuers": Issuers.MASTERCARD},
   {"RegExp": new RegExp(r'^50'), "Issuers": Issuers.VERVE},
@@ -72,13 +72,13 @@ class CreditCardUtils {
   }
 
   Industries _industry(String number) {
-    return _INDUSTRY_IDENTIFIER_MAP[number.substring(0, 1)];
+    return _industryIdentifierMap[number.substring(0, 1)];
   }
 
   Issuers _issuer(String number) {
     Issuers issuer = Issuers.UNKNOWN;
     var issuerID = number.substring(0, 6);
-    _ISSUER_IDENTIFIER_LIST.forEach((item) {
+    _issuerIdentifierList.forEach((item) {
       if (item["RegExp"].hasMatch(issuerID)) {
         issuer = item["Issuers"];
       }

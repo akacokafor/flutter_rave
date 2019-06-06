@@ -3,7 +3,6 @@ import "dart:convert";
 import "package:dio/dio.dart";
 import "package:dio_flutter_transformer/dio_flutter_transformer.dart";
 import "package:flutter_rave/flutter_rave.dart" show CreditCardInfo;
-import 'package:flutter_rave/src/api/services/http_service.dart';
 import "package:tripledes/tripledes.dart";
 
 class RaveApiService {
@@ -17,9 +16,8 @@ class RaveApiService {
 
   Dio _dio;
   Dio _productionDio;
-  HttpService _httpService;
 
-  RaveApiService() : _httpService = HttpService.instance {
+  RaveApiService() {
     _dio = Dio(
       BaseOptions(
         baseUrl: _sandboxProductionUrl,
@@ -183,13 +181,17 @@ class RaveApiService {
     return i;
   }
 
-  validateTransaction(String txRef, String otp, String publicKey) async {
+  validateTransaction(String txRef, String otp, String publicKey,
+      [bool isProduction = true]) async {
     final newData = {
       "PBFPubKey": publicKey,
       "transaction_reference": txRef,
       "otp": otp,
     };
-    final response = await _dio.post(
+
+    final dio = isProduction ? _productionDio : _dio;
+
+    final response = await dio.post(
       _validationEndpoint,
       data: newData,
     );
