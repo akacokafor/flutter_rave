@@ -162,75 +162,77 @@ class __AddDebitCardScreenState extends State<_AddDebitCardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black12.withOpacity(0.1),
-      body: Stack(
-        alignment: AlignmentDirectional.center,
-        fit: StackFit.expand,
-        children: <Widget>[
-          AbsorbPointer(),
-          SafeArea(
-              child: Center(
-            child: Form(
-              key: _globalKey,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Stack(
-                  alignment: AlignmentDirectional.center,
-                  children: <Widget>[
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            SizedBox(
-                              child: RaveProvider(
-                                isDemo: widget.isDemo,
-                                publicKey: widget.publicKey,
-                                encKey: widget.encKey,
-                                transactionRef: widget.transactionRef,
-                                amount: widget.amount,
-                                email: widget.email,
-                                subaccounts: widget.subaccounts,
-                                onSuccess: widget.onSuccess,
-                                onFailure: widget.onSuccess,
-                                cardInfo: _cardInfo,
-                                builder: (context, processCard) {
-                                  _processCard = processCard;
-                                  return _AddDebitCardWidget(
-                                    amount: widget.amount,
-                                    onValidated: (CreditCardInfo creditCard) {
-                                      if (creditCard != null) {
-                                        setState(
-                                          () {
-                                            _cardInfo = creditCard;
+    return Material(
+      color: Colors.transparent,
+      child: Container(
+        color: Colors.black12.withOpacity(0.1),
+        child: Stack(
+          alignment: AlignmentDirectional.center,
+          fit: StackFit.expand,
+          children: <Widget>[
+            AbsorbPointer(),
+            SafeArea(
+                child: Center(
+                  child: Form(
+                    key: _globalKey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Stack(
+                        alignment: AlignmentDirectional.center,
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  SizedBox(
+                                    child: RaveProvider(
+                                      isDemo: widget.isDemo,
+                                      publicKey: widget.publicKey,
+                                      encKey: widget.encKey,
+                                      transactionRef: widget.transactionRef,
+                                      amount: widget.amount,
+                                      email: widget.email,
+                                      subaccounts: widget.subaccounts,
+                                      onSuccess: widget.onSuccess,
+                                      onFailure: widget.onSuccess,
+                                      cardInfo: _cardInfo,
+                                      builder: (context, processCard) {
+                                        _processCard = processCard;
+                                        return _AddDebitCardWidget(
+                                          amount: widget.amount,
+                                          onValidated: (CreditCardInfo creditCard) {
+                                            if (creditCard != null) {
+                                              setState(
+                                                    () {
+                                                  _cardInfo = creditCard;
+                                                },
+                                              );
+                                            }
+                                            setState(
+                                                  () {
+                                                canContinue = creditCard != null;
+                                              },
+                                            );
                                           },
                                         );
-                                      }
-                                      setState(
-                                        () {
-                                          canContinue = creditCard != null;
-                                        },
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: FlatButton(
-                                color: Theme.of(context).accentColor,
-                                disabledColor: Colors.grey[300],
-                                onPressed: canContinue
-                                    ? () async {
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: double.infinity,
+                                    child: FlatButton(
+                                      color: Theme.of(context).accentColor,
+                                      disabledColor: Colors.grey[300],
+                                      onPressed: canContinue
+                                          ? () async {
                                         var result;
                                         try {
                                           result = await _processCard();
@@ -250,51 +252,52 @@ class __AddDebitCardScreenState extends State<_AddDebitCardScreen> {
                                           }
                                         }
                                       }
-                                    : null,
-                                child: Text(
-                                  "Continue",
-                                  style: TextStyle(
+                                          : null,
+                                      child: Text(
+                                        "Continue",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            left: 10.0,
+                            top: 10.0,
+                            width: 20.0,
+                            height: 20.0,
+                            child: InkWell(
+                              onTap: () {
+                                if (widget.onClose != null) {
+                                  widget.onClose();
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.red,
+                                ),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.close,
                                     color: Colors.white,
+                                    size: 15,
                                   ),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 10.0,
-                      top: 10.0,
-                      width: 20.0,
-                      height: 20.0,
-                      child: InkWell(
-                        onTap: () {
-                          if (widget.onClose != null) {
-                            widget.onClose();
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.red,
-                          ),
-                          child: Center(
-                            child: Icon(
-                              Icons.close,
-                              color: Colors.white,
-                              size: 15,
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-          )),
-        ],
+                  ),
+                )),
+          ],
+        ),
       ),
     );
   }
