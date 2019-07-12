@@ -9,7 +9,7 @@ environment:
 
 dependencies:
   cupertino_icons: ^0.1.2
-  flutter_svg: ^0.12.0
+  flutter_svg: ^0.13.1
   dio: ^2.1.0
   dio_flutter_transformer: ^2.0.10
   equatable: ^0.2.3
