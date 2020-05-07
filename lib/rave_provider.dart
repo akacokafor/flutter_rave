@@ -480,7 +480,7 @@ class _BillingInfoProviderState extends State<BillingInfoProvider> {
               children: <Widget>[
                 Text(
                   "Provide your Billing details",
-                  style: Theme.of(context).textTheme.title.copyWith(
+                  style: Theme.of(context).textTheme.headline6.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                 ),
@@ -489,7 +489,7 @@ class _BillingInfoProviderState extends State<BillingInfoProvider> {
                 ),
                 Text(
                   "Your billings details are required to validate your card",
-                  style: Theme.of(context).textTheme.body1,
+                  style: Theme.of(context).textTheme.bodyText1,
                 ),
                 SizedBox(
                   height: 15,
@@ -500,6 +500,8 @@ class _BillingInfoProviderState extends State<BillingInfoProvider> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return "Address is required";
+
+                      else return null;
                   },
                   onSaved: (v) {
                     setState(() {
@@ -572,6 +574,8 @@ class _BillingInfoProviderState extends State<BillingInfoProvider> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return "Name is required";
+
+                      else return null;
                   },
                   onSaved: (v) {
                     setState(() {
@@ -592,6 +596,7 @@ class _BillingInfoProviderState extends State<BillingInfoProvider> {
                   validator: (v) {
                     if (v == null || v.trim().isEmpty)
                       return "Zip Code is required";
+                        else return null;
                   },
                   onSaved: (v) {
                     setState(() {
@@ -662,7 +667,7 @@ class _ValueCollectorComponentState extends State<ValueCollectorComponent> {
         widget.title,
         style: Theme.of(context)
             .textTheme
-            .title
+            .headline6
             .copyWith(color: Theme.of(context).primaryColor),
       ),
       content: Column(
@@ -673,7 +678,7 @@ class _ValueCollectorComponentState extends State<ValueCollectorComponent> {
             padding: const EdgeInsets.only(bottom: 10.0),
             child: Text(
               widget.message,
-              style: Theme.of(context).textTheme.body1,
+              style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           TextField(

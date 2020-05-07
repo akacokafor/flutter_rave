@@ -1,18 +1,18 @@
 name: flutter_rave
 description: Flutterwave's Rave Card Processing Plugin. Completely supports Android and iOS.
 version: 0.0.6
-author: Okafor Akachukwu <okafor.ak@outlook.com>
-homepage: https://github.com/akacokafor/flutter_rave
+author: Ogbonda Chiziaruhoma
+homepage: https://github.com/zfinix/flutter_rave
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.5.2 <3.0.0"
 
 dependencies:
   cupertino_icons: ^0.1.2
-  flutter_svg: ^0.13.1
-  dio: ^2.1.0
-  dio_flutter_transformer: ^2.0.10
-  equatable: ^0.2.3
+  flutter_svg:  0.17.4 
+  dio: 3.0.9 
+  dio_flutter_transformer: 3.0.2 
+  equatable: ^1.1.1
   flushbar: ^1.3.0
   intl: any
   crypto: ^2.0.6

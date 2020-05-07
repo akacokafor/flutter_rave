@@ -105,13 +105,7 @@ class CreditCardInfo extends Equatable {
   String type;
 
   CreditCardInfo(
-      this.cardNumber, this.expirationMonth, this.expirationYear, this.cvv)
-      : super([
-          cvv,
-          expirationMonth,
-          expirationYear,
-          cardNumber,
-        ]);
+      this.cardNumber, this.expirationMonth, this.expirationYear, this.cvv);
 
   bool get isComplete {
     return cardNumber != null &&
@@ -123,6 +117,14 @@ class CreditCardInfo extends Equatable {
         cvv != null &&
         cvv.isNotEmpty;
   }
+
+  @override
+  List<Object> get props => [
+        cvv,
+        expirationMonth,
+        expirationYear,
+        cardNumber,
+      ];
 }
 
 class _AddDebitCardScreen extends StatefulWidget {
@@ -468,7 +470,7 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                       ),
                       subtitle: Text(
                         "You will be charged ${widget.isDollar ? dollarSymbol : nairaSymbol}${widget.amount}",
-                        style: Theme.of(context).textTheme.subtitle.copyWith(
+                        style: Theme.of(context).textTheme.subtitle1.copyWith(
                               color: Colors.grey,
                             ),
                       ),
@@ -497,7 +499,7 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
               children: <Widget>[
                 Text(
                   "Card Number",
-                  style: Theme.of(context).textTheme.subtitle.copyWith(
+                  style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontSize: 14.0,
                         color: Colors.grey[600],
                       ),
@@ -554,7 +556,7 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                           Text(
                             "Expiry Date",
                             style:
-                                Theme.of(context).textTheme.subtitle.copyWith(
+                                Theme.of(context).textTheme.subtitle2.copyWith(
                                       fontSize: 14.0,
                                       color: Colors.grey[600],
                                     ),
@@ -613,7 +615,7 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                           Text(
                             "CVV",
                             style:
-                                Theme.of(context).textTheme.subtitle.copyWith(
+                                Theme.of(context).textTheme.subtitle2.copyWith(
                                       fontSize: 14.0,
                                       color: Colors.grey[600],
                                     ),
@@ -743,7 +745,7 @@ class __CardAddedSuccessfullyState extends State<_CardAddedSuccessfully> {
               Text(
                 "We've added your Debit Card",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.title.copyWith(
+                style: Theme.of(context).textTheme.headline6.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
@@ -752,7 +754,7 @@ class __CardAddedSuccessfullyState extends State<_CardAddedSuccessfully> {
               ),
               Text(
                 "We've successfully added your card, you can now save with it.",
-                style: Theme.of(context).textTheme.body1,
+                style: Theme.of(context).textTheme.bodyText2,
                 textAlign: TextAlign.center,
               ),
               SizedBox(

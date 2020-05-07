@@ -20,15 +20,7 @@ class ApiConfig extends Equatable {
     this.ravePublicKey,
     this.raveEncryptionKey,
     this.defaultCardProvider,
-  }) : super([
-          baseUrl,
-          paystackPublicKey,
-          ravePublicKey,
-          raveEndpoint,
-          raveEncryptionKey,
-          defaultCardProvider,
-          paystackEndPoint,
-        ]);
+  }) : super();
 
   factory ApiConfig(
     String baseUrl, {
@@ -70,4 +62,15 @@ class ApiConfig extends Equatable {
       defaultProvider: defaultProvider,
     );
   }
+
+  @override
+  List<Object> get props => [
+          baseUrl,
+          paystackPublicKey,
+          ravePublicKey,
+          raveEndpoint,
+          raveEncryptionKey,
+          defaultCardProvider,
+          paystackEndPoint,
+        ];
 }
