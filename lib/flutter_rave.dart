@@ -235,7 +235,12 @@ class __AddDebitCardScreenState extends State<_AddDebitCardScreen> {
                                 ),
                               ),
                               SizedBox(
+                                height: 10,
+                              ),
+                              Container(
                                 width: double.infinity,
+                                height: 60,
+                                padding: EdgeInsets.symmetric(horizontal: 10),
                                 child: FlatButton(
                                   color: Theme.of(context).accentColor,
                                   disabledColor: Colors.grey[300],
@@ -268,14 +273,17 @@ class __AddDebitCardScreenState extends State<_AddDebitCardScreen> {
                                     ),
                                   ),
                                 ),
-                              )
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
                             ],
                           ),
                         ),
                       ),
                       Positioned(
-                        left: 10.0,
-                        top: 10.0,
+                        right: 30.0,
+                        top: 20.0,
                         width: 20.0,
                         height: 20.0,
                         child: InkWell(
@@ -287,13 +295,12 @@ class __AddDebitCardScreenState extends State<_AddDebitCardScreen> {
                           child: Container(
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.red,
                             ),
                             child: Center(
                               child: Icon(
                                 Icons.close,
-                                color: Colors.white,
-                                size: 15,
+                                color: Colors.red,
+                                size: 23,
                               ),
                             ),
                           ),
@@ -448,6 +455,9 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
           Padding(
             padding: const EdgeInsets.only(
               bottom: 20.0,
@@ -464,15 +474,18 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                       title: Text(
                         "Enter your Card Details",
                         style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w800,
-                        ),
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20),
                       ),
-                      subtitle: Text(
-                        "You will be charged ${widget.isDollar ? dollarSymbol : nairaSymbol}${widget.amount}",
-                        style: Theme.of(context).textTheme.subtitle1.copyWith(
-                              color: Colors.grey,
-                            ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top:10),
+                        child: Text(
+                          "You will be charged ${widget.isDollar ? dollarSymbol : nairaSymbol}${widget.amount}",
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                color: Colors.grey,
+                              ),
+                        ),
                       ),
                     ),
                   ),
@@ -492,7 +505,7 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
+            padding: const EdgeInsets.only(bottom: 10.0, top:20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -503,6 +516,9 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                         fontSize: 14.0,
                         color: Colors.grey[600],
                       ),
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 TextField(
                   focusNode: _cardNumerFocusNode,
@@ -538,6 +554,9 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
               ],
             ),
           ),
+          SizedBox(
+            height: 25,
+          ),
           Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
             child: Container(
@@ -560,6 +579,9 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                                       fontSize: 14.0,
                                       color: Colors.grey[600],
                                     ),
+                          ),
+                          SizedBox(
+                            height: 20,
                           ),
                           TextField(
                             focusNode: _cardExpDateFocusNode,
@@ -619,6 +641,9 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                                       fontSize: 14.0,
                                       color: Colors.grey[600],
                                     ),
+                          ),
+                          SizedBox(
+                            height: 20,
                           ),
                           TextField(
                             focusNode: _cardCvvFocusNode,

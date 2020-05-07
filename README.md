@@ -11,6 +11,9 @@ supports Android and iOS.
             <td style="text-align: center">
                 <img src="./example/s1.png" width="400" />
             </td>
+            <td style="text-align: center">
+                <img src="./example/s2.png" width="400" />
+            </td>
         </tr>
     </table>
 </div>
