@@ -12,7 +12,7 @@ class HttpService extends Equatable {
 
   Dio get dio => _dio;
 
-  HttpService._(this.config) : super([config]) {
+  HttpService._(this.config) : super() {
     _dio = Dio(
       BaseOptions(
         baseUrl: config.baseUrl,
@@ -55,4 +55,6 @@ class HttpService extends Equatable {
     _dio.options.headers = headers;
     return this;
   }
+
+  List<Object> get props => [config];
 }

@@ -9,7 +9,10 @@ supports Android and iOS.
     <table>
         <tr>
             <td style="text-align: center">
-                <img src="./example/s1.png" width="400" />
+                <img src="./example/s1.png" height="400" />
+            </td>
+            <td style="text-align: center">
+                <img src="./example/s2.png" height="400" />
             </td>
         </tr>
     </table>

@@ -32,6 +32,7 @@ class RaveCardPayment {
   final Function onClosed;
   final BuildContext context;
   final bool isDemo;
+  final bool isDollar;
 
   const RaveCardPayment({
     Key key,
@@ -42,6 +43,7 @@ class RaveCardPayment {
     @required this.email,
     this.subaccounts,
     this.isDemo = false,
+    this.isDollar = false,
     this.onSuccess,
     this.onFailure,
     this.onClosed,
@@ -54,6 +56,7 @@ class RaveCardPayment {
       builder: (dialogContext) {
         return _AddDebitCardScreen(
           isDemo: this.isDemo,
+          isDollar: this.isDollar,
           publicKey: this.publicKey,
           encKey: this.encKey,
           transactionRef: this.transactionRef,
@@ -102,13 +105,7 @@ class CreditCardInfo extends Equatable {
   String type;
 
   CreditCardInfo(
-      this.cardNumber, this.expirationMonth, this.expirationYear, this.cvv)
-      : super([
-          cvv,
-          expirationMonth,
-          expirationYear,
-          cardNumber,
-        ]);
+      this.cardNumber, this.expirationMonth, this.expirationYear, this.cvv);
 
   bool get isComplete {
     return cardNumber != null &&
@@ -120,6 +117,14 @@ class CreditCardInfo extends Equatable {
         cvv != null &&
         cvv.isNotEmpty;
   }
+
+  @override
+  List<Object> get props => [
+        cvv,
+        expirationMonth,
+        expirationYear,
+        cardNumber,
+      ];
 }
 
 class _AddDebitCardScreen extends StatefulWidget {
@@ -131,6 +136,7 @@ class _AddDebitCardScreen extends StatefulWidget {
   final double amount;
   final String email;
   final bool isDemo;
+  final bool isDollar;
   final Function onSuccess;
   final Function onFailure;
   final Function onClose;
@@ -144,6 +150,7 @@ class _AddDebitCardScreen extends StatefulWidget {
     @required this.email,
     this.subaccounts,
     this.isDemo = false,
+    this.isDollar = false,
     this.onSuccess,
     this.onFailure,
     this.onClose,
@@ -173,129 +180,137 @@ class __AddDebitCardScreenState extends State<_AddDebitCardScreen> {
             AbsorbPointer(),
             SafeArea(
                 child: Center(
-                  child: Form(
-                    key: _globalKey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Stack(
-                        alignment: AlignmentDirectional.center,
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  SizedBox(
-                                    child: RaveProvider(
-                                      isDemo: widget.isDemo,
-                                      publicKey: widget.publicKey,
-                                      encKey: widget.encKey,
-                                      transactionRef: widget.transactionRef,
+              child: Form(
+                key: _globalKey,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Stack(
+                    alignment: AlignmentDirectional.center,
+                    children: <Widget>[
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              SizedBox(
+                                child: RaveProvider(
+                                  isDemo: widget.isDemo,
+                                  publicKey: widget.publicKey,
+                                  encKey: widget.encKey,
+                                  transactionRef: widget.transactionRef,
+                                  amount: widget.amount,
+                                  email: widget.email,
+                                  subaccounts: widget.subaccounts,
+                                  onSuccess: widget.onSuccess,
+                                  onFailure: widget.onSuccess,
+                                  cardInfo: _cardInfo,
+                                  builder: (context, processCard) {
+                                    _processCard = processCard;
+                                    return _AddDebitCardWidget(
                                       amount: widget.amount,
-                                      email: widget.email,
-                                      subaccounts: widget.subaccounts,
-                                      onSuccess: widget.onSuccess,
-                                      onFailure: widget.onSuccess,
-                                      cardInfo: _cardInfo,
-                                      builder: (context, processCard) {
-                                        _processCard = processCard;
-                                        return _AddDebitCardWidget(
-                                          amount: widget.amount,
-                                          onValidated: (CreditCardInfo creditCard) {
-                                            if (creditCard != null) {
-                                              setState(
-                                                    () {
-                                                  _cardInfo = creditCard;
-                                                },
-                                              );
-                                            }
-                                            setState(
-                                                  () {
-                                                canContinue = creditCard != null;
-                                              },
-                                            );
+                                      isDollar: widget.isDollar,
+                                      onValidated: (CreditCardInfo creditCard) {
+                                        if (creditCard != null) {
+                                          setState(
+                                            () {
+                                              _cardInfo = creditCard;
+                                            },
+                                          );
+                                        }
+                                        setState(
+                                          () {
+                                            canContinue = creditCard != null;
                                           },
                                         );
                                       },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: FlatButton(
-                                      color: Theme.of(context).accentColor,
-                                      disabledColor: Colors.grey[300],
-                                      onPressed: canContinue
-                                          ? () async {
-                                        var result;
-                                        try {
-                                          result = await _processCard();
-                                        } catch (e) {
-                                          widget.onFailure(e);
-                                          return;
-                                        }
+                                    );
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Container(
+                                width: double.infinity,
+                                height: 60,
+                                padding: EdgeInsets.symmetric(horizontal: 10),
+                                child: FlatButton(
+                                  color: Theme.of(context).accentColor,
+                                  disabledColor: Colors.grey[300],
+                                  onPressed: canContinue
+                                      ? () async {
+                                          var result;
+                                          try {
+                                            result = await _processCard();
+                                          } catch (e) {
+                                            widget.onFailure(e);
+                                            return;
+                                          }
 
-                                        if (result != null) {
-                                          if (widget.onSuccess != null) {
-                                            widget.onSuccess(result);
-                                          }
-                                        } else {
-                                          if (widget.onFailure != null) {
-                                            widget.onFailure(
-                                                "Transaction Failed");
+                                          if (result != null) {
+                                            if (widget.onSuccess != null) {
+                                              widget.onSuccess(result);
+                                            }
+                                          } else {
+                                            if (widget.onFailure != null) {
+                                              widget.onFailure(
+                                                  "Transaction Failed");
+                                            }
                                           }
                                         }
-                                      }
-                                          : null,
-                                      child: Text(
-                                        "Continue",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                                      : null,
+                                  child: Text(
+                                    "Continue",
+                                    style: TextStyle(
+                                      color: Colors.white,
                                     ),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 10.0,
-                            top: 10.0,
-                            width: 20.0,
-                            height: 20.0,
-                            child: InkWell(
-                              onTap: () {
-                                if (widget.onClose != null) {
-                                  widget.onClose();
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Colors.red,
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.close,
-                                    color: Colors.white,
-                                    size: 15,
                                   ),
                                 ),
                               ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 30.0,
+                        top: 20.0,
+                        width: 20.0,
+                        height: 20.0,
+                        child: InkWell(
+                          onTap: () {
+                            if (widget.onClose != null) {
+                              widget.onClose();
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.red,
+                                size: 23,
+                              ),
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                )),
+                ),
+              ),
+            )),
           ],
         ),
       ),
@@ -306,11 +321,13 @@ class __AddDebitCardScreenState extends State<_AddDebitCardScreen> {
 class _AddDebitCardWidget extends StatefulWidget {
   final Function(CreditCardInfo) onValidated;
   final double amount;
+  final bool isDollar;
 
   const _AddDebitCardWidget({
     Key key,
     this.onValidated,
     @required this.amount,
+    @required this.isDollar,
   }) : super(key: key);
 
   @override
@@ -438,6 +455,9 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
         mainAxisSize: MainAxisSize.max,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          SizedBox(
+            height: 30,
+          ),
           Padding(
             padding: const EdgeInsets.only(
               bottom: 20.0,
@@ -454,15 +474,18 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                       title: Text(
                         "Enter your Card Details",
                         style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w800,
-                        ),
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 20),
                       ),
-                      subtitle: Text(
-                        "You will be charged $nairaSymbol${widget.amount}",
-                        style: Theme.of(context).textTheme.subtitle.copyWith(
-                              color: Colors.grey,
-                            ),
+                      subtitle: Padding(
+                        padding: const EdgeInsets.only(top:10),
+                        child: Text(
+                          "You will be charged ${widget.isDollar ? dollarSymbol : nairaSymbol}${widget.amount}",
+                          style: Theme.of(context).textTheme.subtitle1.copyWith(
+                                color: Colors.grey,
+                              ),
+                        ),
                       ),
                     ),
                   ),
@@ -482,17 +505,20 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 10.0),
+            padding: const EdgeInsets.only(bottom: 10.0, top:20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
                   "Card Number",
-                  style: Theme.of(context).textTheme.subtitle.copyWith(
+                  style: Theme.of(context).textTheme.subtitle2.copyWith(
                         fontSize: 14.0,
                         color: Colors.grey[600],
                       ),
+                ),
+                SizedBox(
+                  height: 20,
                 ),
                 TextField(
                   focusNode: _cardNumerFocusNode,
@@ -528,6 +554,9 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
               ],
             ),
           ),
+          SizedBox(
+            height: 25,
+          ),
           Padding(
             padding: const EdgeInsets.only(bottom: 5.0),
             child: Container(
@@ -546,10 +575,13 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                           Text(
                             "Expiry Date",
                             style:
-                                Theme.of(context).textTheme.subtitle.copyWith(
+                                Theme.of(context).textTheme.subtitle2.copyWith(
                                       fontSize: 14.0,
                                       color: Colors.grey[600],
                                     ),
+                          ),
+                          SizedBox(
+                            height: 20,
                           ),
                           TextField(
                             focusNode: _cardExpDateFocusNode,
@@ -605,10 +637,13 @@ class __AddDebitCardWidgetState extends State<_AddDebitCardWidget> {
                           Text(
                             "CVV",
                             style:
-                                Theme.of(context).textTheme.subtitle.copyWith(
+                                Theme.of(context).textTheme.subtitle2.copyWith(
                                       fontSize: 14.0,
                                       color: Colors.grey[600],
                                     ),
+                          ),
+                          SizedBox(
+                            height: 20,
                           ),
                           TextField(
                             focusNode: _cardCvvFocusNode,
@@ -735,7 +770,7 @@ class __CardAddedSuccessfullyState extends State<_CardAddedSuccessfully> {
               Text(
                 "We've added your Debit Card",
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.title.copyWith(
+                style: Theme.of(context).textTheme.headline6.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),
@@ -744,7 +779,7 @@ class __CardAddedSuccessfullyState extends State<_CardAddedSuccessfully> {
               ),
               Text(
                 "We've successfully added your card, you can now save with it.",
-                style: Theme.of(context).textTheme.body1,
+                style: Theme.of(context).textTheme.bodyText2,
                 textAlign: TextAlign.center,
               ),
               SizedBox(
